@@ -1,0 +1,16 @@
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        def dfs(i):
+            if (i==len(s)):
+                return True 
+            for w in wordDict : 
+                print(w)
+                if i+len(w)<=len(s) and s[i:i+len(w)]==w :
+                    return dfs(i+len(w))
+            return False
+                    
+
+
+        return dfs(0)
+
+        

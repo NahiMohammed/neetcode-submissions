@@ -1,23 +1,24 @@
 class Solution:
     def isPathCrossing(self, path: str) -> bool:
-        x=0
-        y=0
-        s=set()
-        s.add((0,0))
-        for i in range(len(path)):
-            if path[i]=="N":
-                y+=1
-            elif path[i]=="S":
-                y-=1
-            elif path[i]=="E":
-                x+=1
-            else :
-                x-=1
-            if (x,y) in s :
-                return True
-            else :
-                s.add((x,y))
+        def update(cor,d) : 
+            match d:
+                case 'N':
+                    return (cor[0]+1,cor[1])
+                case 'S':
+                    return (cor[0]-1,cor[1])
+                case 'E':
+                    return (cor[0],cor[1]+1)
+                case 'W':
+                    return (cor[0],cor[1]-1)
+
+            return cor
+        prev=set()
+        prev.add((0,0))
+        curr=[0,0]
+        for c in path :
+            new = update(curr,c)
+            if new in prev :
+                return True 
+            prev.add(new)
+            curr=new
         return False
-
-
-        

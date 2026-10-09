@@ -1,28 +1,25 @@
 class Solution:
     def asteroidCollision(self, asteroids: List[int]) -> List[int]:
-        stack=[]
-        for c in asteroids :
-            #print(f"debut satck= {stack}")
-            if not stack :
-                if c>0:
-                    stack.append(c)
-            else: 
-                last=stack.pop()
-                if last*c>0:
-                    stack.append(last)
-                    stack.append(c)
+
+        st=[]
+        for a in asteroids :
+            if a>0:
+                st.append(a)
+            else :
+                if not st or st[-1]<0:
+                    st.append(a)
                 else :
-                    #print(f"last*c<0 {c}")
-                    diff=last+c
-                    if diff>0 :
-                        stack.append(last)
-                    elif diff<0 :
-                        stack.append(c)
+                    destroid=False
+                    while st and st[-1]>0 and not destroid :
+                        last=st[-1]
+                        if last>=-a :
+                            destroid=True
+                            if last==-a :
+                                st.pop()
+                        else :
+                            st.pop()
+                    if not destroid :
+                        st.append(a)
 
+        return st
 
-                    
-
-
-
-        return stack
-        

@@ -1,17 +1,23 @@
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
-        self.res = []
-        self.backtrack([], nums, [False] * len(nums))
-        return self.res
+        res=[]
+        locked=[False]*len(nums)
+    
+        def backtracking(sub) :
+            if len(sub)==len(nums) :
+                res.append(sub.copy())
+                return
+            for j in range(0,len(nums)) :
+                if not locked[j]:
 
-    def backtrack(self, perm: List[int], nums: List[int], pick: List[bool]):
-        if len(perm) == len(nums):
-            self.res.append(perm[:])
-            return
-        for i in range(len(nums)):
-            if not pick[i]:
-                perm.append(nums[i])
-                pick[i] = True
-                self.backtrack(perm, nums, pick)
-                perm.pop()
-                pick[i] = False
+                    sub.append(nums[j])
+                    locked[j]=True
+
+                    backtracking(sub)
+
+                    sub.pop()
+                    locked[j]=False
+
+
+        backtracking([])
+        return res

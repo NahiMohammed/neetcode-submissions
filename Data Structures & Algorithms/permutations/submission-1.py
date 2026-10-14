@@ -1,23 +1,21 @@
 class Solution:
-    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
-        self.res = []
-        nums.sort()  # so duplicates sit next to each other
-        self.backtrack([], nums, [False] * len(nums))
-        return self.res
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        res=[]
+        locked=[False]*len(nums)
+    
+        def backtracking(sub) :
+            if len(sub)==len(nums) :
+                res.append(sub.copy())
+                return
+            for j in range(0,len(nums)) :
+                if not locked[j]:
 
-    def backtrack(self, perm: List[int], nums: List[int], pick: List[bool]):
-        if len(perm) == len(nums):
-            self.res.append(perm[:])
-            return
-        for i in range(len(nums)):
-            if pick[i]:
-                continue
-            # skip duplicates: only use nums[i] if the previous equal value
-            # has already been placed in this branch (pick[i-1] is True)
-            if i > 0 and nums[i] == nums[i - 1] and not pick[i - 1]:
-                continue
-            perm.append(nums[i])
-            pick[i] = True
-            self.backtrack(perm, nums, pick)
-            perm.pop()
-            pick[i] = False
+                    sub.append(nums[j])
+                    locked[j]=True
+
+                    backtracking(sub)
+
+                    sub.pop()
+                    locked[j]=False
+        backtracking([])
+        return res

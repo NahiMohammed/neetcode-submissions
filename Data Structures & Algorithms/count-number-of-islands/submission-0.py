@@ -1,20 +1,25 @@
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
-        def neutrelize(i,j):
-            if i<0 or i>=len(grid) or j<0 or j>=len(grid[0]) or grid[i][j]=='0' :
-                return 
-            grid[i][j]='0'
-            neutrelize(i-1,j)
-            neutrelize(i+1,j)
-            neutrelize(i,j-1)
-            neutrelize(i,j+1)
+        def bfs(x,y):
+            nonlocal grid
+            grid[x][y]="0"
+            for dx,dy in directions :
+                nx=x+dx
+                ny=y+dy
+                if nx>=0 and nx<len(grid) and ny>=0 and ny<len(grid[0]) and grid[nx][ny]=="1":
+                    bfs(nx,ny)
 
+
+
+
+        directions  = [(1,0),(0,1),(-1,0),(0,-1)]
         res=0
         for i in range(len(grid)):
             for j in range(len(grid[0])):
-                if grid[i][j]=='1':
+                if grid[i][j]=="1"  :
                     res+=1
-                    neutrelize(i,j)
-        return res
+                    bfs(i,j)
 
+        return res
+        
         

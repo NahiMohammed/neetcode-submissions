@@ -1,19 +1,36 @@
 class Solution:
     def islandPerimeter(self, grid: List[List[int]]) -> int:
-        rows, cols = len(grid), len(grid[0])
-        perimeter = 0
+        directions=[(1,0),(-1,0),(0,1),(0,-1)]
+        n=len(grid)
+        m=len(grid[0])
+        res=0
+        visited=set()
+        def bfs(i,j) :
+            nonlocal res 
+            visited.add((i,j))
 
-        for i in range(rows):
-            for j in range(cols):
-                if grid[i][j] == 1:
-                    perimeter += 4
+            for dx , dy in directions :
+                nx , ny = dx+i , dy +j
+                if not (nx>=0 and nx<n and  ny>=0 and ny<m) :
+                    res+=1
+                else :
+                    if grid[nx][ny]==0 :
+                        res+=1
+                    else :
+                        if (nx,ny) not in visited :
 
-                    # Check top
-                    if i > 0 and grid[i-1][j] == 1:
-                        perimeter -= 2  # Both cells share an edge
+                            bfs(nx,ny)
 
-                    # Check left
-                    if j > 0 and grid[i][j-1] == 1:
-                        perimeter -= 2
 
-        return perimeter
+
+        flag= False
+        for i in range(len(grid)) :
+            if flag  :
+                break
+            for j in range(len(grid[0])) :
+                
+                if grid[i][j]==1 :
+                    flag= True
+                    bfs(i,j)
+                    break
+        return res

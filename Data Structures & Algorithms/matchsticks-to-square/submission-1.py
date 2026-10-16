@@ -1,40 +1,27 @@
 class Solution:
     def makesquare(self, matchsticks: List[int]) -> bool:
-        s = sum(matchsticks)
-
-        if s % 4 != 0:
+        total_length = sum(matchsticks)
+        if total_length % 4 != 0:
             return False
 
-        target = s // 4
-
-        # Très important : essayer les grandes allumettes d'abord
+        length = total_length // 4
+        sides = [0] * 4
         matchsticks.sort(reverse=True)
 
-        used = [False] * len(matchsticks)
-
-        def backtracking(curr, sides):
-            # 3 côtés sont terminés => le 4e est forcément correct
-            if sides == 3:
+        def dfs(i):
+            if i == len(matchsticks):
                 return True
 
-            # Un côté est terminé, on commence le suivant
-            if curr == target:
-                return backtracking(0, sides + 1)
+            for side in range(4):
+                if sides[side] + matchsticks[i] <= length:
+                    sides[side] += matchsticks[i]
+                    if dfs(i + 1):
+                        return True
+                    sides[side] -= matchsticks[i]
 
-            for i in range(len(matchsticks)):
-                if used[i]:
-                    continue
-
-                if curr + matchsticks[i] > target:
-                    continue
-
-                used[i] = True
-
-                if backtracking(curr + matchsticks[i], sides):
-                    return True
-
-                used[i] = False
+                if sides[side] == 0:
+                    break
 
             return False
 
-        return backtracking(0, 0)
+        return dfs(0)

@@ -1,40 +1,38 @@
 class Solution:
     def restoreIpAddresses(self, s: str) -> List[str]:
-        def valid(part):
-            # vide
-            if not part:
-                return False
-            if len(part)>3 :
-                return False
-            # > 255
-            if int(part) > 255:
-                return False
-            # leading zero
-            if len(part) > 1 and part[0] == "0":
-                return False
-            return True
-        ##########################
-        if len(s)> 12 :
-            return[]
-        ##########################
-        res=[]
-        def b(i, j, k):
-            if k >= len(s):
+        res = []
+        sub = []
+
+        def backtracking(start):
+            remaining_chars = len(s) - start
+            remaining_segments = 4 - len(sub)
+
+            # Prune impossible branches
+            if remaining_chars < remaining_segments:
+                return
+            if remaining_chars > remaining_segments * 3:
                 return
 
-            if i < j < k < len(s):
-                if valid(s[:i]) and valid(s[i:j]) and valid(s[j:k]) and valid(s[k:]):
-                    res.append(s[:i] + "." + s[i:j] + "." + s[j:k] + "." + s[k:])
-            # avancer k d'abord
-            b(i, j, k + 1)
+            if start == len(s):
+                if len(sub) == 4:
+                    res.append(".".join(sub))
+                return
 
-            # puis j (reset k)
-            b(i, j + 1, j + 2)
+            for end in range(start + 1, min(start + 4, len(s) + 1)):
+                segment = s[start:end]
 
-            # puis i (reset j,k)
-            b(i + 1, i + 2, i + 3)
-            
+                if len(segment) > 1 and segment[0] == "0":
+                    break
 
-        b(1,2,3)
+                if int(segment) > 255:
+                    break
+
+                sub.append(segment)
+                backtracking(end)
+                sub.pop()
+
+        if not 4 <= len(s) <= 12:
+            return []
+
+        backtracking(0)
         return res
-        

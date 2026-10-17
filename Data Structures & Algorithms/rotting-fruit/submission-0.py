@@ -1,29 +1,35 @@
 class Solution:
     def orangesRotting(self, grid: List[List[int]]) -> int:
-        s=set()
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if grid[i][j]==2:
-                    s.add((i,j))
+        rotten = deque()
+        n = len(grid)
+        m = len(grid[0])
+        fresh=0
 
-        def update() :
-            to_add = set()
-            for (i,j) in s :
-                for dx,dy in [(-1,0),(1,0),(0,-1),(0,1)] :
-                    nx , ny = i+dx , j+dy
-                    if 0<=nx<len(grid) and 0<=ny<len(grid[0]) and grid[nx][ny]==1:
-                        grid[nx][ny]=2
-                        to_add.add((nx, ny))
-            return to_add
-        res=0
-        while True :
-            new =update()
-            if len(new)==0:
-                if res==0:
-                    return -1
-                return res
-            res+=1
-            s.update(new)
+        for i in range(n) :
+            for j in range(m) :
 
+                if grid[i][j] == 2 :
+                    rotten.append((i,j))
 
-        
+                elif grid[i][j]==1 :
+                    fresh+=1
+
+        directions = [(0,1) , (0,-1) , (1,0), (-1,0)]
+
+        minutes=0
+
+        while rotten and fresh >0:
+            
+            minutes+=1
+
+            for _ in range(len(rotten)) :
+                x,y = rotten.popleft()
+
+                for dx , dy in directions :
+                    nx,ny =x+dx,y+dy
+                    if nx>=0 and nx<n and ny>=0 and ny<m :
+                        if grid[nx][ny]==1 :
+                            grid[nx][ny]=2
+                            fresh-=1
+                            rotten.append((nx,ny))
+        return minutes if fresh ==0 else -1

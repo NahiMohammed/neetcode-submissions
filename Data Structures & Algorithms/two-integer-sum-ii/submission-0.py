@@ -7,7 +7,7 @@ class Solution:
                 r-=1
             else :
                 l+=1
-        return [numbers[l],numbers[r]]
+        return [l+1,r+1]
 
 
         

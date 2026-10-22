@@ -1,18 +1,21 @@
 class Solution:
     def numRescueBoats(self, people: List[int], limit: int) -> int:
-        people.sort()
         res=0
+        people.sort()
         l=0
         r=len(people)-1
-        print(f"people{people}")
+        print(people)
         while l<=r :
-            sum=people[r]
-            r-=1
-            
-            while sum+people[l]<=limit :
-                sum+=people[l]
+            print(f"debut l=={l} and  r == {r}")
+            if people[r]+people[l]<=limit :
                 l+=1
+            r-=1
             res+=1
-            print(f"une fois r: {r} l:{l}")
+
         return res
-        
+"""
+ 3 
+0  
+1
+3
+"""

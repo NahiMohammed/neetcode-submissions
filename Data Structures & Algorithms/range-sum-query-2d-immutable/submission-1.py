@@ -1,20 +1,27 @@
 class NumMatrix:
+    def __init__(self, matrix: List[List[int]]):
+        n = len(matrix)
+        m = len(matrix[0])
 
-    def __init__(self, matrix: list[list[int]]):
-        ROWS, COLS = len(matrix), len(matrix[0])
-        self.sumMat = [[0] * (COLS + 1) for _ in range(ROWS + 1)]
+        self.range_matrix = [[0] * (m + 1) for _ in range(n + 1)]
 
-        for r in range(ROWS):
-            prefix = 0
-            for c in range(COLS):
-                prefix += matrix[r][c]
-                above = self.sumMat[r][c + 1]
-                self.sumMat[r + 1][c + 1] = prefix + above
+        for i in range(1, n + 1):
+            curr = 0
+            for j in range(1, m + 1):
+                curr += matrix[i - 1][j - 1]
+
+                self.range_matrix[i][j] = self.range_matrix[i - 1][j] + curr
 
     def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
-        row1, col1, row2, col2 = row1 + 1, col1 + 1, row2 + 1, col2 + 1
-        bottomRight = self.sumMat[row2][col2]
-        above = self.sumMat[row1 - 1][col2]
-        left = self.sumMat[row2][col1 - 1]
-        topLeft = self.sumMat[row1 - 1][col1 - 1]
-        return bottomRight - above - left + topLeft
+
+        return (
+            self.range_matrix[row2 + 1][col2 + 1]
+            - self.range_matrix[row1][col2 + 1]
+            - self.range_matrix[row2 + 1][col1]
+            + self.range_matrix[row1][col1]
+        )
+
+
+# Your NumMatrix object will be instantiated and called as such:
+# obj = NumMatrix(matrix)
+# param_1 = obj.sumRegion(row1,col1,row2,col2)

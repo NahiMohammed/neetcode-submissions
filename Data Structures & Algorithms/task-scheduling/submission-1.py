@@ -1,52 +1,32 @@
-import heapq
-from typing import List
-
-
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
-        dic = {}
-        k = len(tasks)
+        heap_cooldown = []
+        heap_priority = []
+        freq=Counter(tasks)
+        cpu_cycle = 0
 
-        m = [""] * (k + (k - 1) * n)
+        for k, v in freq.items():
+            heapq.heappush(heap_priority, (-v,k))
+
+        while heap_priority or heap_cooldown :
+
+            if not heap_priority :
+                cpu_cycle = heap_cooldown[0][0]
+            while heap_cooldown and cpu_cycle >=heap_cooldown[0][0] :
+                t , freq , task =heapq.heappop(heap_cooldown)
+                heapq.heappush(heap_priority,(freq,task))
+            
+            freq , task = heapq.heappop(heap_priority)
+            freq+=1
+
+            if freq<0 :
+                heapq.heappush(heap_cooldown,(cpu_cycle+n+1,freq,task))
+
+            cpu_cycle+=1
+                
 
 
-        available = [1] * (k + (k - 1) * n)
 
 
-        indices = [0] * len(m)
-        for i in range(len(m)):
-            indices[i] = i
+        return cpu_cycle
 
-        heapq.heapify(indices)
-
-        for i, t in enumerate(tasks):
-            if t not in dic:
-                while indices and available[indices[0]] == 0:
-                    heapq.heappop(indices)
-
-                idx = heapq.heappop(indices)
-
-                available[idx] = 0
-                m[idx] = t
-                dic[t] = idx
-
-            else:
-                while indices and available[indices[0]] == 0:
-                    heapq.heappop(indices)
-
-                idx1 = indices[0]
-                idx2 = dic[t] + n + 1
-
-                idx = max(idx1, idx2)
-
-                available[idx] = 0
-                m[idx] = t
-                dic[t] = idx
-
-        count = len(m)
-        for i in range(len(m) - 1, -1, -1):
-            if m[i] != "":
-                count = i + 1
-                break
-
-        return count

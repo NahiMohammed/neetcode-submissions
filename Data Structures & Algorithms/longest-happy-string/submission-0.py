@@ -8,29 +8,20 @@ class Solution:
             heapq.heappush(heap, (-b,"b"))
         if c :
             heapq.heappush(heap, (-c,"c"))
-        hold=None
-        occ_hold =0
+        hold = None
+
         while heap :
-            print(heap)
-            print(res)
-            n , letter = heapq.heappop(heap)
+            freq , letter  = heapq.heappop(heap)
+            freq+=1
             res.append(letter)
-            n+=1
-            if hold:
-                heapq.heappush(heap, (occ_hold,hold))
-                hold=None
-                occ_hold=0
-
-            if n !=0:
-                if len(res)>=2 :
-                    if res[-1]== letter and res[-2]==letter :
-                        hold = letter 
-                        occ_hold = n  
-                    else :
-                        heapq.heappush(heap,(n,letter))
-
+            if hold :
+                heapq.heappush(heap , hold)
+                hold = None
+            if freq!=0 :
+                if len(res)>=2 and res[-1]==letter and letter==res[-2] :
+                    hold = (freq , letter)
                 else :
-                    heapq.heappush(heap,(n,letter))
+                    heapq.heappush(heap,(freq,letter))
 
-        return "".join(res)
         
+        return "".join(res)

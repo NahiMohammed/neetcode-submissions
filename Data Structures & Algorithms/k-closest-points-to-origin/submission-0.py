@@ -1,16 +1,13 @@
 class Solution:
     def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
-        heap = []  # max heap simulé avec distances négatives
+        heap=[]
+        res=[]
+        for p in points :
+            heapq.heappush(heap, (math.sqrt(p[0]**2 +p[1]**2),p))
+        for _ in range(k):
+            p=heapq.heappop(heap)
+            res.append(p[1])
+        return res
+        
 
-        for x, y in points:
-            dist = x*x + y*y  # pas besoin de sqrt
-
-            # push en négatif pour simuler max heap
-            heapq.heappush(heap, (-dist, x, y))
-
-            # garder seulement k éléments
-            if len(heap) > k:
-                heapq.heappop(heap)
-
-        return [[x, y] for _, x, y in heap]
         

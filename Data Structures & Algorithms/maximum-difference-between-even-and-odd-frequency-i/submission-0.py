@@ -1,13 +1,17 @@
 class Solution:
     def maxDifference(self, s: str) -> int:
-        c=Counter(s)
-        a1=0
-        a2=len(s)
-        for k, v in c.items() :
-            if v%2==1 and v>a1 :
-                a1=v
-            if v%2==0 and v<a2 :
-                a2=v
-        return a1 -a2
-
-        
+        c = Counter(s)
+        tab = [0]*101
+        for k , v in c.items() :
+            tab[v] =v
+        right = len(tab)
+        for i in range(len(tab)-2, -1,-2) :
+            if tab[i]> 0 :
+                right = i 
+                break
+        left = 0
+        for i in range(0, len(tab),2) :
+            if tab[i]> 0 :
+                left = i 
+                break
+        return right-left

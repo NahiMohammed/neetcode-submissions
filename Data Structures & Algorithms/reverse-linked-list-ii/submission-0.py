@@ -6,9 +6,8 @@ class Solution:
         right: int
     ) -> Optional[ListNode]:
 
-        def reverse(head):
-            prev = None
-            curr = head
+        def revers(head):
+            prev, curr = None, head
 
             while curr:
                 tmp = curr.next
@@ -21,36 +20,33 @@ class Solution:
         dummy = ListNode(0)
         dummy.next = head
 
-        # Find the node BEFORE left
-        before = dummy
+        # Find the node before `left`
+        prev = dummy
 
         for _ in range(left - 1):
-            before = before.next
+            prev = prev.next
 
-        # Find the node AFTER right
-        after = before.next
+        # Start of the part to reverse
+        start = prev.next
 
-        for _ in range(right - left + 1):
-            after = after.next
+        # Find the node after `right`
+        end = start
 
-        # Save the beginning of the part to reverse
-        start = before.next
+        for _ in range(right - left):
+            end = end.next
 
-        # Disconnect the part
-        before.next = None
-        start.next = None
+        after = end.next
 
-        # Reverse [left, right]
-        reversed_head = reverse(start)
+        # Disconnect the part we want to reverse
+        end.next = None
 
-        # Find the end of the reversed list
-        reversed_tail = reversed_head
+        # Reverse it
+        reversed_head = revers(start)
 
-        while reversed_tail.next:
-            reversed_tail = reversed_tail.next
+        # Connect previous part -> reversed part
+        prev.next = reversed_head
 
-        # Reconnect
-        before.next = reversed_head
-        reversed_tail.next = after
+        # `start` is now the LAST node after reversal
+        start.next = after
 
         return dummy.next

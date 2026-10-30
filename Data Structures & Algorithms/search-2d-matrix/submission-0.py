@@ -6,9 +6,11 @@ class Solution:
         right = n*m-1
         while left<right :
             mid= left + (right-left)//2
-            if target<=matrix[mid//n][mid%n] :
+            if target<=matrix[mid//m][mid%m] :
                 right= mid
             else :
                 left=mid+1
-        return True if matrix[left//n][left%n]==target else False
+        if left == n*m :
+            return False
+        return True if matrix[left//m][left%m]==target  else  False
         

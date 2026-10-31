@@ -1,23 +1,25 @@
-import bisect
+from _bisect import bisect_left
+from bisect import bisect_right
 class TimeMap:
 
     def __init__(self):
-        self.map=defaultdict(list)
-        self.map_time= defaultdict(list)
-        
+        self.data = {}
 
     def set(self, key: str, value: str, timestamp: int) -> None:
-        self.map[key].append(value)
-        self.map_time[key].append(timestamp)
-    
-    
+        if key not in self.data :
+            self.data[key]= [[],[]]
+        self.data[key][0].append(timestamp)
+        self.data[key][1].append(value)
+
+
+        
 
     def get(self, key: str, timestamp: int) -> str:
-
-        idx=bisect.bisect_right(self.map_time[key],timestamp) 
-        if idx==0 :
+        if key not in self.data:
             return ""
-        
-        return self.map[key][idx-1] 
+        i = bisect_right(self.data[key][0],timestamp)
+        if i == 0 :
+            return ""
 
+        return self.data[key][1][i-1]
         

@@ -1,21 +1,23 @@
 class Solution:
     def checkValidString(self, s: str) -> bool:
-        open=0
-        closed=0
-        joker=0
-        for c in s :
-            if c=="*" :
-                joker+=1
-            elif c=="(" :
-                open+=1 
-            else :
-                if open==0 :
-                    if joker ==0 :
-                        return False
-                    else :
-                        joker-=1
-                else :
-                    open-=1
-        return joker>=open
+        low = high = 0
 
-        
+        for c in s:
+            if c == '(':
+                low += 1
+                high += 1
+
+            elif c == ')':
+                low -= 1
+                high -= 1
+
+            else:  # *
+                low -= 1  # * acts as )
+                high += 1  # * acts as (
+
+            if high < 0:
+                return False
+
+            low = max(0, low)
+
+        return low == 0

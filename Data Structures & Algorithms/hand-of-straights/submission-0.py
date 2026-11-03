@@ -1,20 +1,22 @@
 class Solution:
     def isNStraightHand(self, hand: List[int], groupSize: int) -> bool:
-        
-        while hand :
-            m=min(hand)
-            hand.remove(m)
-            for i in range(groupSize-1) :
-                if hand and m+1 in hand :
-                    m+=1
-                    hand.remove(m)
-                else :
+
+        counter = Counter(hand)
+        while len(counter)>=groupSize :
+            m = min(counter.keys())
+            occ = counter[m]
+            del counter[m]
+            for i in range(1,groupSize) :
+                if counter[m+i]<occ :
                     return False
-        return not hand
-        
-        
+                counter[m+i]-=occ
+                if counter[m+i]==0 :
+                    del counter[m+i]
+                
 
+
+
+            
         
-
-
+        return True if len(counter)==0 else False
         

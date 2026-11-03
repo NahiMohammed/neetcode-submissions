@@ -1,15 +1,28 @@
 class Solution:
     def lemonadeChange(self, bills: List[int]) -> bool:
-        five, ten = 0, 0
-        for b in bills:
-            if b == 5:
-                five += 1
-            elif b == 10:
-                five, ten = five - 1, ten + 1
-            elif ten > 0:
-                five, ten = five - 1, ten - 1
-            else:
-                five -= 3
-            if five < 0:
-                return False
+        wallet={5:0,
+        10 : 0,
+        20 : 0}
+        for b in bills :
+            if b == 5 :
+                wallet[5]+=1
+            elif b==10 :
+                if wallet[5]==0 :
+                    return False 
+                else :
+                    wallet[5]-=1
+                    wallet[10]+=1
+            else :
+                if wallet[10]==0 :
+                    if wallet[5]<3 :
+                        return False
+                    else :
+                        wallet[5]-=3
+                else :
+                    if wallet[5]==0 :
+                        return False 
+                    else :
+                        wallet[5]-=1
+                        wallet[10]-=1
+                        wallet[20]+=1
         return True

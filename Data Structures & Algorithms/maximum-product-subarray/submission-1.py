@@ -1,12 +1,8 @@
 class Solution:
-    def maxProduct(self, arr: List[int]) -> int:
-        current_sum = arr[0]
-        max_sum = arr[0]
-
-        for i in range(1, len(arr)):
-            current_sum = max(arr[i], current_sum*arr[i])
-            max_sum = max(max_sum, current_sum)
-
-        return max_sum
-        
-        
+    def maxProduct(self, nums: List[int]) -> int:
+        cur_max = cur_min = res = nums[0]
+        for x in nums[1:]:
+            candidates = (x, x * cur_max, x * cur_min)
+            cur_max, cur_min = max(candidates), min(candidates)
+            res = max(res, cur_max)
+        return res

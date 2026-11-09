@@ -1,17 +1,23 @@
 class Solution:
     def minimumRecolors(self, blocks: str, k: int) -> int:
-        res=len(blocks)
-        curr=0
-        L=0
-        for R,c in enumerate(blocks):
-            if R-L==k-1:
+
+        l = 0 
+        res= len(blocks)
+        curr = 0
+        for r in range(len(blocks)) : 
+            print(f"l == {l} and r == {r} and curr = {curr}")
+
+            if r-l+1>k :
+                if blocks[l] =="W" :
+                    curr-=1       
+                l+=1
+
+            if blocks[r] == "W" :
+                curr+= 1
+            if r-l+1==k :
                 res=min(res,curr)
-            if R-L>k :
-                
-                if blocks[L]=="W":
-                    curr-=1
-                L+=1
-            if blocks[R]=="W" :
-                curr+=1
         return res
+            
+
+            
         

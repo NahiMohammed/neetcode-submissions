@@ -13,21 +13,16 @@ class MyCircularQueue:
         self.right=Node(0)
         self.left.next, self.right.prev = self.right, self.left
 
-
-        
-
     def enQueue(self, value: int) -> bool:
         if self.isFull() :
             return False
         self.size+=1
         node=Node(value)
         prev=self.right.prev
-        nxt=self.right
         node.prev = prev
         node.next = self.right
         self.right.prev=node
         prev.next=node
-        print(self.Rear())
         return True
 
         
@@ -39,9 +34,10 @@ class MyCircularQueue:
         if self.isEmpty() : 
             return False
         node = self.left.next
-        self.next = node.next 
+        self.left.next = node.next 
         node.next.prev= self.left
         self.size-=1
+        print(f"dequeu called front = {self.Front()}  and last = {self.Rear()}  ")
         return True
 
         

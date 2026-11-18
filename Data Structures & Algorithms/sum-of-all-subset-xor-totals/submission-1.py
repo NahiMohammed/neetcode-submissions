@@ -1,8 +1,15 @@
 class Solution:
     def subsetXORSum(self, nums: List[int]) -> int:
-        def dfs(i, total):
+        def backtrack(i, xor):
             if i == len(nums):
-                return total
-            return dfs(i + 1, total ^ nums[i]) + dfs(i + 1, total)
+                return xor
 
-        return dfs(0, 0)
+            # Include nums[i]
+            include = backtrack(i + 1, xor ^ nums[i])
+
+            # Exclude nums[i]
+            exclude = backtrack(i + 1, xor)
+
+            return include + exclude
+
+        return backtrack(0, 0)

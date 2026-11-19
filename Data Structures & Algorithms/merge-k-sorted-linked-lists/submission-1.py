@@ -1,21 +1,23 @@
-from functools import reduce
+import heapq
 
 class Solution:
     def mergeKLists(self, lists):
-        if not lists:
-            return None
+        heap = []
 
-        def merge(l1, l2):
-            dummy = node = ListNode()
-            while l1 and l2:
-                if l1.val < l2.val:
-                    node.next = l1
-                    l1 = l1.next
-                else:
-                    node.next = l2
-                    l2 = l2.next
-                node = node.next
-            node.next = l1 or l2
-            return dummy.next
+        for i, node in enumerate(lists):
+            if node:
+                heapq.heappush(heap, (node.val, i, node))
 
-        return reduce(merge, lists)
+        dummy = ListNode()
+        curr = dummy
+
+        while heap:
+            val, i, node = heapq.heappop(heap)
+
+            curr.next = node
+            curr = curr.next
+
+            if node.next:
+                heapq.heappush(heap, (node.next.val, i, node.next))
+
+        return dummy.next

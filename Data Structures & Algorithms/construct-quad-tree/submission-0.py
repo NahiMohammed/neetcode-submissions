@@ -12,24 +12,18 @@ class Node:
 
 class Solution:
     def construct(self, grid: List[List[int]]) -> 'Node':
-        n=len(grid)
-        total = sum(sum(row) for row in grid)
+        total = sum(sum(row) for row in grid) 
+        n = len(grid)
+        if total%(n**2) == 0  :
+            return Node(bool(grid[0][0]),True)
 
-        if total==n*n or total==0:
-            return Node(bool(total), True)
-        else :
-            print("s")
-            mid=n//2
-            topLeft=[grid[i][0:mid] for i in range(mid) ]
-            bottomLeft= [grid[i][0:mid] for i in range(mid,n) ]
-            topRight = [grid[i][mid:n] for i in range(mid) ]
-            bottomRight= [grid[i][mid:n] for i in range(mid,n) ]
-            return Node(
-                False,
-                False,
-                self.construct(topLeft),
-                self.construct(topRight),
-                self.construct(bottomLeft),
-                self.construct(bottomRight)
-            )
-        
+
+        half = n // 2
+
+        top_left = self.construct([row[:half] for row in grid[:half]])
+        top_right = self.construct([row[half:] for row in grid[:half]])
+
+        bottom_left = self.construct([row[:half] for row in grid[half:]])
+        bottom_right = self.construct([row[half:] for row in grid[half:]])
+        return Node(False , False , top_left ,top_right , bottom_left ,bottom_right)
+
